@@ -1,11 +1,18 @@
-package vehicles;
+package com.parkland.vehicles;
 
-import vehicles.enums.CarColor;
+import com.parkland.vehicles.enums.CarColor;
 
+/**
+ *
+ */
 public abstract class Vehicle {
 
     private String regNumber;
     private CarColor color;
+
+    Vehicle getInfo(){
+        return this;
+    }
 
     public String getRegNumber() {
         return regNumber;

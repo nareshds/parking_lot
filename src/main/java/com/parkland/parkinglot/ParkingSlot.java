@@ -1,8 +1,17 @@
-package parkinglot;
+package com.parkland.parkinglot;
 
+/**
+ *
+ *
+ */
 public class ParkingSlot {
     private long slotId;
     private boolean isEmpty;
+
+    public ParkingSlot nearestParkingSlot(){
+
+        return null;
+    }
 
     public long getSlotId() {
         return slotId;
