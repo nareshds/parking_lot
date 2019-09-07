@@ -1,6 +1,6 @@
 package com.parkland.vehicles;
 
-import com.parkland.vehicles.enums.CarColor;
+import com.parkland.enums.CarColor;
 
 /**
  *
