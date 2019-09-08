@@ -18,7 +18,7 @@ public class Main {
         ParkingLot lot = null;
         String line;
         while((line = br.readLine()) != null){
-            String[] input = line.split(" ");
+            String[] input = line.split(Constants.SPACE);
             Queries query = Queries.valueOf(input[0]);
             switch (query) {
                 case create_parking_lot:
@@ -32,7 +32,7 @@ public class Main {
                     try{
                         lot.parkVehicle(vehicle);
                     } catch (NullPointerException e){
-                        throw new NullPointerException("No parking lot object found");
+                        throw new NullPointerException(Constants.ERROR_NO_PARKING_OBJECT);
                     }
                     break;
                 case leave:
@@ -43,28 +43,41 @@ public class Main {
                     break;
                 case registration_numbers_for_cars_with_colour:
                     List<Vehicle> cars =  lot.getRegNumbersFromColor(input[1]);
+                    StringBuilder builder = new StringBuilder();
                     for(Vehicle car : cars){
-                        System.out.println(car.getRegNumber());
+                        builder.append(car.getRegNumber()+ Constants.COMMA + Constants.SPACE);
+                    }
+                    if(cars.size() > 0){
+                        System.out.println(builder.toString().substring(0, builder.lastIndexOf(Constants.COMMA)));
                     }
                     break;
                 case slot_numbers_for_cars_with_colour:
-                    List<ParkingSlot> slots = lot.getSlotNumbersFromColor(input[1]);
-                    for(ParkingSlot slot : slots){
-                        System.out.println(slot.getSlotId());
-                    }
+                    List<Integer> slots = lot.getSlotNumbersFromColor(input[1]);
+                    printResultAsString(slots);
                     break;
                 case slot_number_for_registration_number:
                     slots = lot.getSlotNumberFromRegNumber(input[1]);
-                    for(ParkingSlot slot : slots){
-                        System.out.println(slot.getSlotId());
+                    if (slots.size() == 0){
+                        System.out.println(Constants.INFO_NOT_FOUND);
                     }
+                    printResultAsString(slots);
                     break;
                 case exit:
                     System.exit(0);
                     break;
                 default:
-                    throw new IllegalArgumentException("Not a valid query or input");
+                    throw new IllegalArgumentException(Constants.ERROR_ILLEGAL_ARG);
             }
+        }
+    }
+
+    private static void printResultAsString(List<Integer> slots) {
+        StringBuilder builder = new StringBuilder();
+        for(Integer slot : slots){
+            builder.append(slot+ Constants.COMMA+ Constants.SPACE);
+        }
+        if(slots.size() > 0){
+            System.out.println(builder.toString().substring(0, builder.lastIndexOf(Constants.COMMA)));
         }
     }
 }

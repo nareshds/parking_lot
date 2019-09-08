@@ -1,26 +1,128 @@
 package com.parkland.parkinglot;
 
+import com.parkland.Constants;
 import com.parkland.vehicles.Vehicle;
 
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
- *
+ * class implementing all the methods defined in the ParkingLot interface
  *
  */
 public class ParkingLot implements IParkingLot {
 
-    private static List<ParkingSlot> parkingSlots;
-    //private List<Vehicle> filledSlots;
-    private int lotSize;
+    private static List<ParkingSlot> parkingSlots; //list of available parking slots
+    private  Map<Integer, Vehicle> filledSlots;    //occupied slot info
+    private int lotSize;  //defined lot size
 
+    /**
+     *
+     * @param n: parking lot size
+     * @return
+     */
     public final List<ParkingSlot> createParkingSlot(Integer n){
         setLotSize(n);
-        buildParkingLot();
-        return getParkingSlots();
+        if(getParkingSlots() == null){
+            buildParkingLot();
+            setFilledSlots(new HashMap<Integer, Vehicle>());
+            return getParkingSlots();
+        } else {
+            throw new IllegalArgumentException(Constants.ERROR_ILLEGAL_ARG);
+        }
     }
 
+    /**
+     *
+     * @param vehicle
+     * @return
+     */
+    @Override
+    public ParkingSlot parkVehicle(Vehicle vehicle) {
+        if(getParkingSlots().size() > 0){
+            ParkingSlot nearestSlot = new ParkingSlot().nearestParkingSlot(getParkingSlots());
+            nearestSlot.setVehicle(vehicle);
+            getFilledSlots().put(nearestSlot.getSlotId(), vehicle);
+            System.out.println(Constants.INFO_ALLOTTED_SLOT +nearestSlot.getSlotId());
+            deleteHeapNode();
+            return nearestSlot;
+        } else {
+            System.out.println(Constants.INFO_PARKING_FULL);
+            return null;
+        }
+    }
+
+    @Override
+    public void unParkVehicle(int slotNumber) {
+        List<ParkingSlot> slots = getParkingSlots();
+        boolean unParkable = true;
+        for(ParkingSlot slot : slots){
+            if(slot.getSlotId() == slotNumber){
+                System.out.println("Trying to un-park non-existing vehicle");
+                unParkable = false;
+            }
+        }
+        if(unParkable) {
+            ParkingSlot slot = new ParkingSlot(slotNumber);
+            getFilledSlots().remove(slotNumber);
+            insertHeapNode(slot);
+            System.out.println("Slot number " + slot.getSlotId() + " is free");
+        }
+
+    }
+
+    @Override
+    public void getLotStatus() {
+        System.out.println("Slot No. \t Registration No \t Color");
+        for( Integer slot : getFilledSlots().keySet()){
+            Vehicle vehicle = getFilledSlots().get(slot);
+            System.out.println(slot +"\t\t" + vehicle.getRegNumber()+ "\t"+vehicle.getColor());
+        }
+    }
+
+    @Override
+    public List<Vehicle> getRegNumbersFromColor(String color) {
+        List<Vehicle> vehicles = new ArrayList<>();
+        for(Integer slot : getFilledSlots().keySet()){
+            Vehicle vehicle = getFilledSlots().get(slot);
+            if(vehicle.getColor().toString().equals(color)){
+                vehicles.add(vehicle);
+            }
+        }
+        return vehicles;
+    }
+
+    @Override
+    public List<Integer> getSlotNumbersFromColor(String color) {
+        List<Integer> slots = new ArrayList<>();
+        for(Integer slot : getFilledSlots().keySet()){
+            Vehicle vehicle = getFilledSlots().get(slot);
+            if(vehicle.getColor().toString().equals(color)){
+                slots.add(slot);
+            }
+        }
+        return slots;
+    }
+
+    @Override
+    public List<Integer> getSlotNumberFromRegNumber(String regNum) {
+        List<Integer> slots = new ArrayList<>();
+        for(Integer slot : getFilledSlots().keySet()){
+            Vehicle vehicle = getFilledSlots().get(slot);
+            if(vehicle.getRegNumber().equals(regNum)){
+                slots.add(slot);
+            }
+        }
+        return slots;
+    }
+
+    //Helper Methods
+    /**
+     *
+     */
     private void buildParkingLot() {
         setParkingSlots(new ArrayList<>(getLotSize()));
         for(int i = 1; i <= getLotSize(); i++){
@@ -31,9 +133,14 @@ public class ParkingLot implements IParkingLot {
         for(int i = 0; i <= nonLeafNodeIndex; i++){
             minHeapify(i, getParkingSlots().get(i));
         }
-        System.out.println("Created a parking lot with "+ getLotSize() +" slots");
+        System.out.println(Constants.INFO_LOT_CREATED+ Constants.SPACE + getLotSize() +Constants.SPACE+Constants.SLOTS);
     }
 
+    /**
+     *
+     * @param i
+     * @param slot
+     */
     private void minHeapify(Integer i, ParkingSlot slot) {
         ParkingSlot nearestSlot = slot;
         int leftNodeIndx = 2 * i + 1;
@@ -65,20 +172,10 @@ public class ParkingLot implements IParkingLot {
         }
     }
 
-    public ParkingSlot parkVehicle(Vehicle vehicle) {
-        if(getParkingSlots().size() > 0){
-            ParkingSlot nearestSlot = new ParkingSlot().nearestParkingSlot(getParkingSlots());
-            nearestSlot.setVehicle(vehicle);
-            //getFilledSlots().add(nearestSlot.getSlotId(), vehicle);
-            System.out.println("Allocated slot number: "+nearestSlot.getSlotId());
-            deleteHeapNode();
-            return nearestSlot;
-        } else {
-            System.out.println("Sorry, parking lot is full");
-            return null;
-        }
-    }
 
+    /**
+     * delete parking slot as unavailable once occupied by a vehicle
+     */
     private void deleteHeapNode() {
         int heapSize = getParkingSlots().size();
         if(heapSize > 0){
@@ -92,10 +189,19 @@ public class ParkingLot implements IParkingLot {
         }
     }
 
+    /**
+     *
+     * @param pos
+     * @return
+     */
     private int parentNode(int pos) {
         return pos % 2 == 1 ? pos/2 : (pos-1)/2;
     }
 
+    /**
+     *
+     * @param slot
+     */
     private void insertHeapNode(ParkingSlot slot){
         int heapSize = getParkingSlots().size();
         if(heapSize < getLotSize()){
@@ -103,49 +209,6 @@ public class ParkingLot implements IParkingLot {
             minHeapify(parentNode(heapSize), getParkingSlots().get(parentNode(heapSize)));
         } else {
             System.out.println("TODO");
-        }
-
-    }
-
-    @Override
-    public void getLotStatus() {
-        /*List<Vehicle> vehicles = getFilledSlots();
-        System.out.println("Slot No. \t Registration No \t Color");
-        for(int i = 0; i <  vehicles.size(); i++){
-            if(vehicles.get(i) != null){
-                System.out.println((i+1) +"\t" + vehicles.get(i).getRegNumber()+ "\t"+vehicles.get(i).getColor());
-            }
-        }*/
-    }
-
-    @Override
-    public List<Vehicle> getRegNumbersFromColor(String color) {
-        return null;
-    }
-
-    @Override
-    public List<ParkingSlot> getSlotNumbersFromColor(String color) {
-        return null;
-    }
-
-    @Override
-    public List<ParkingSlot> getSlotNumberFromRegNumber(String regNum) {
-        return null;
-    }
-
-    public void unParkVehicle(int slotNumber) {
-        List<ParkingSlot> slots = getParkingSlots();
-        boolean unParkable = true;
-        for(ParkingSlot slot : slots){
-            if(slot.getSlotId() == slotNumber){
-                System.out.println("Trying to un-park non-existing vehicle");
-                unParkable = false;
-            }
-        }
-        if(unParkable) {
-            ParkingSlot slot = new ParkingSlot(slotNumber);
-            insertHeapNode(slot);
-            System.out.println("Slot number " + slot.getSlotId() + " is free");
         }
 
     }
@@ -163,13 +226,13 @@ public class ParkingLot implements IParkingLot {
         return lotSize;
     }
 
-    /*public List<Vehicle> getFilledSlots() {
+    public Map<Integer, Vehicle> getFilledSlots() {
         return filledSlots;
     }
 
-    public void setFilledSlots(List<Vehicle> filledSlots) {
+    public void setFilledSlots(Map<Integer, Vehicle> filledSlots) {
         this.filledSlots = filledSlots;
-    }*/
+    }
 
     public void setLotSize(int lotSize) {
         this.lotSize = lotSize;
