@@ -3,7 +3,7 @@ package com.parkland.vehicles;
 import com.parkland.enums.CarColor;
 
 /**
- *
+ * Vehicle class
  */
 public abstract class Vehicle {
 

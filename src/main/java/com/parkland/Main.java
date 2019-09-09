@@ -1,7 +1,6 @@
 package com.parkland;
 
 import com.parkland.parkinglot.ParkingLot;
-import com.parkland.parkinglot.ParkingSlot;
 import com.parkland.vehicles.Car;
 import com.parkland.vehicles.Vehicle;
 import com.parkland.enums.CarColor;
@@ -12,6 +11,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
 
+/**
+ *
+ * Driver code
+ */
 public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -29,48 +32,71 @@ public class Main {
                     Vehicle vehicle = new Car();
                     vehicle.setRegNumber(input[1]);
                     vehicle.setColor(CarColor.valueOf(input[2]));
-                    try{
+                    if(lot != null){
                         lot.parkVehicle(vehicle);
-                    } catch (NullPointerException e){
+                    } else {
                         throw new NullPointerException(Constants.ERROR_NO_PARKING_OBJECT);
                     }
                     break;
                 case leave:
-                    lot.unParkVehicle(Integer.parseInt(input[1]));
+                    if(lot != null) {
+                        lot.unParkVehicle(Integer.parseInt(input[1]));
+                    } else {
+                        throw new NullPointerException(Constants.ERROR_NO_PARKING_OBJECT);
+                    }
                     break;
                 case status:
-                    lot.getLotStatus();
+                    if(lot != null){
+                        lot.getLotStatus();
+                    } else {
+                        throw new NullPointerException(Constants.ERROR_NO_PARKING_OBJECT);
+                    }
                     break;
                 case registration_numbers_for_cars_with_colour:
-                    List<Vehicle> cars =  lot.getRegNumbersFromColor(input[1]);
-                    StringBuilder builder = new StringBuilder();
-                    for(Vehicle car : cars){
-                        builder.append(car.getRegNumber()+ Constants.COMMA + Constants.SPACE);
-                    }
-                    if(cars.size() > 0){
-                        System.out.println(builder.toString().substring(0, builder.lastIndexOf(Constants.COMMA)));
+                    if(lot != null){
+                        List<Vehicle> cars =  lot.getRegNumbersFromColor(input[1]);
+                        StringBuilder builder = new StringBuilder();
+                        for(Vehicle car : cars){
+                            builder.append(car.getRegNumber()+ Constants.COMMA + Constants.SPACE);
+                        }
+                        if(cars.size() > 0){
+                            System.out.println(builder.toString().substring(0, builder.lastIndexOf(Constants.COMMA)));
+                        }
+                    } else {
+                        throw new NullPointerException(Constants.ERROR_NO_PARKING_OBJECT);
                     }
                     break;
                 case slot_numbers_for_cars_with_colour:
-                    List<Integer> slots = lot.getSlotNumbersFromColor(input[1]);
-                    printResultAsString(slots);
+                    List<Integer> slots;
+                    if(lot != null){
+                        slots = lot.getSlotNumbersFromColor(input[1]);
+                        printResultAsString(slots);
+                    } else {
+                        throw new NullPointerException(Constants.ERROR_NO_PARKING_OBJECT);
+                    }
                     break;
                 case slot_number_for_registration_number:
-                    slots = lot.getSlotNumberFromRegNumber(input[1]);
-                    if (slots.size() == 0){
-                        System.out.println(Constants.INFO_NOT_FOUND);
+                    if(lot != null) {
+                        slots = lot.getSlotNumberFromRegNumber(input[1]);
+                        if (slots.size() == 0){
+                            System.out.println(Constants.INFO_NOT_FOUND);
+                        }
+                        printResultAsString(slots);
                     }
-                    printResultAsString(slots);
                     break;
                 case exit:
                     System.exit(0);
                     break;
                 default:
-                    throw new IllegalArgumentException(Constants.ERROR_ILLEGAL_ARG);
+                    throw new IllegalArgumentException(Constants.ERROR_INVALID_QUERY);
             }
         }
     }
 
+    /**
+     *
+     * @param slots
+     */
     private static void printResultAsString(List<Integer> slots) {
         StringBuilder builder = new StringBuilder();
         for(Integer slot : slots){

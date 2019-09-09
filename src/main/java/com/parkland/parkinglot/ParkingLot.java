@@ -55,6 +55,10 @@ public class ParkingLot implements IParkingLot {
         }
     }
 
+    /**
+     *
+     * @param slotNumber
+     */
     @Override
     public void unParkVehicle(int slotNumber) {
         List<ParkingSlot> slots = getParkingSlots();
@@ -74,6 +78,9 @@ public class ParkingLot implements IParkingLot {
 
     }
 
+    /**
+     * get the current occupied slots in the lot
+     */
     @Override
     public void getLotStatus() {
         System.out.println("Slot No. \t Registration No \t Color");
@@ -83,6 +90,11 @@ public class ParkingLot implements IParkingLot {
         }
     }
 
+    /**
+     *
+     * @param color
+     * @return
+     */
     @Override
     public List<Vehicle> getRegNumbersFromColor(String color) {
         List<Vehicle> vehicles = new ArrayList<>();
@@ -95,6 +107,11 @@ public class ParkingLot implements IParkingLot {
         return vehicles;
     }
 
+    /**
+     *
+     * @param color
+     * @return
+     */
     @Override
     public List<Integer> getSlotNumbersFromColor(String color) {
         List<Integer> slots = new ArrayList<>();
@@ -107,6 +124,11 @@ public class ParkingLot implements IParkingLot {
         return slots;
     }
 
+    /**
+     *
+     * @param regNum
+     * @return
+     */
     @Override
     public List<Integer> getSlotNumberFromRegNumber(String regNum) {
         List<Integer> slots = new ArrayList<>();
@@ -121,6 +143,7 @@ public class ParkingLot implements IParkingLot {
 
     //Helper Methods
     /**
+     * build min heap with unoccupied slots as heap nodes
      *
      */
     private void buildParkingLot() {
@@ -138,8 +161,8 @@ public class ParkingLot implements IParkingLot {
 
     /**
      *
-     * @param i
-     * @param slot
+     * @param i : Heap Node index
+     * @param slot: parking slot
      */
     private void minHeapify(Integer i, ParkingSlot slot) {
         ParkingSlot nearestSlot = slot;
@@ -148,17 +171,28 @@ public class ParkingLot implements IParkingLot {
         boolean leftSwap = false;
         boolean rightSwap = false;
 
+        /**
+         * min element is left child node
+         * swap left child node with current node
+         */
         if(leftNodeIndx < getParkingSlots().size() && getParkingSlots().get(leftNodeIndx).getSlotId() < nearestSlot.getSlotId()){
             nearestSlot = getParkingSlots().get(leftNodeIndx);
             leftSwap = true;
         }
 
+        /**
+         * min element is right child node
+         * swap right child node with current node
+         */
         if(rightNodeIndx < getParkingSlots().size() && getParkingSlots().get(rightNodeIndx).getSlotId() < nearestSlot.getSlotId()) {
             nearestSlot = getParkingSlots().get(rightNodeIndx);
             rightSwap = true;
             leftSwap = false;
         }
 
+        /**
+         * heapify after swap, if made
+         */
         if(nearestSlot.getSlotId() != slot.getSlotId()){
             getParkingSlots().set(i, nearestSlot);
             if(leftSwap) {
@@ -208,7 +242,7 @@ public class ParkingLot implements IParkingLot {
             getParkingSlots().add(slot);
             minHeapify(parentNode(heapSize), getParkingSlots().get(parentNode(heapSize)));
         } else {
-            System.out.println("TODO");
+            System.out.println("TODO: ");
         }
 
     }
