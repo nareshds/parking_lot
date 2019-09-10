@@ -1,6 +1,7 @@
 package com.parkland.parkinglot;
 
 import com.parkland.Constants;
+import com.parkland.enums.CarColor;
 import com.parkland.vehicles.Vehicle;
 
 
@@ -73,7 +74,7 @@ public class ParkingLot implements IParkingLot {
             ParkingSlot slot = new ParkingSlot(slotNumber);
             getFilledSlots().remove(slotNumber);
             insertHeapNode(slot);
-            System.out.println("Slot number " + slot.getSlotId() + " is free");
+            System.out.println(Constants.SLOT_NUMBER + slot.getSlotId() + Constants.IS_FREE);
         }
 
     }
@@ -83,10 +84,10 @@ public class ParkingLot implements IParkingLot {
      */
     @Override
     public void getLotStatus() {
-        System.out.println("Slot No. \t Registration No \t Color");
+        System.out.println(Constants.SLOT_NO+"\t "+Constants.REGISTRATION_NUMBER+" \t"+ Constants.COLOR);
         for( Integer slot : getFilledSlots().keySet()){
             Vehicle vehicle = getFilledSlots().get(slot);
-            System.out.println(slot +"\t\t" + vehicle.getRegNumber()+ "\t"+vehicle.getColor());
+            System.out.println(slot +"\t\t" + vehicle.getRegNumber()+ "\t\t"+vehicle.getColor());
         }
     }
 
@@ -96,11 +97,11 @@ public class ParkingLot implements IParkingLot {
      * @return
      */
     @Override
-    public List<Vehicle> getRegNumbersFromColor(String color) {
+    public List<Vehicle> getRegNumbersFromColor(CarColor color) {
         List<Vehicle> vehicles = new ArrayList<>();
         for(Integer slot : getFilledSlots().keySet()){
             Vehicle vehicle = getFilledSlots().get(slot);
-            if(vehicle.getColor().toString().equals(color)){
+            if(vehicle.getColor().equals(color)){
                 vehicles.add(vehicle);
             }
         }
@@ -113,11 +114,11 @@ public class ParkingLot implements IParkingLot {
      * @return
      */
     @Override
-    public List<Integer> getSlotNumbersFromColor(String color) {
+    public List<Integer> getSlotNumbersFromColor(CarColor color) {
         List<Integer> slots = new ArrayList<>();
         for(Integer slot : getFilledSlots().keySet()){
             Vehicle vehicle = getFilledSlots().get(slot);
-            if(vehicle.getColor().toString().equals(color)){
+            if(vehicle.getColor().equals(color)){
                 slots.add(slot);
             }
         }
@@ -130,15 +131,14 @@ public class ParkingLot implements IParkingLot {
      * @return
      */
     @Override
-    public List<Integer> getSlotNumberFromRegNumber(String regNum) {
-        List<Integer> slots = new ArrayList<>();
+    public Integer getSlotNumberFromRegNumber(String regNum) {
         for(Integer slot : getFilledSlots().keySet()){
             Vehicle vehicle = getFilledSlots().get(slot);
             if(vehicle.getRegNumber().equals(regNum)){
-                slots.add(slot);
+                return slot;
             }
         }
-        return slots;
+        return null;
     }
 
     //Helper Methods

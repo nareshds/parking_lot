@@ -54,7 +54,7 @@ public class Main {
                     break;
                 case registration_numbers_for_cars_with_colour:
                     if(lot != null){
-                        List<Vehicle> cars =  lot.getRegNumbersFromColor(input[1]);
+                        List<Vehicle> cars =  lot.getRegNumbersFromColor(CarColor.valueOf(input[1]));
                         StringBuilder builder = new StringBuilder();
                         for(Vehicle car : cars){
                             builder.append(car.getRegNumber()+ Constants.COMMA + Constants.SPACE);
@@ -69,7 +69,7 @@ public class Main {
                 case slot_numbers_for_cars_with_colour:
                     List<Integer> slots;
                     if(lot != null){
-                        slots = lot.getSlotNumbersFromColor(input[1]);
+                        slots = lot.getSlotNumbersFromColor(CarColor.valueOf(input[1]));
                         printResultAsString(slots);
                     } else {
                         throw new NullPointerException(Constants.ERROR_NO_PARKING_OBJECT);
@@ -77,11 +77,11 @@ public class Main {
                     break;
                 case slot_number_for_registration_number:
                     if(lot != null) {
-                        slots = lot.getSlotNumberFromRegNumber(input[1]);
-                        if (slots.size() == 0){
+                        Integer slot = lot.getSlotNumberFromRegNumber(input[1]);
+                        if (slot == null){
                             System.out.println(Constants.INFO_NOT_FOUND);
                         }
-                        printResultAsString(slots);
+                        System.out.println(slot);
                     }
                     break;
                 case exit:

@@ -8,6 +8,11 @@ public class Constants {
     public static final String INFO_ALLOTTED_SLOT = "Allocated slot number: ";
     public static final String INFO_PARKING_FULL = "Sorry, parking lot is full";
     public static final String INFO_NOT_FOUND = "Not Found";
+    public static final String SLOT_NUMBER = "Slot number ";
+    public static final String IS_FREE = " is free";
+    public static final String SLOT_NO = "Slot No. ";
+    public static final String REGISTRATION_NUMBER = "Registration No ";
+    public static final String COLOR = "Colour";
 
     public static final String ERROR_NO_PARKING_OBJECT = "No parking lot object found";
     public static final String ERROR_INVALID_QUERY = "Not a valid query or input";

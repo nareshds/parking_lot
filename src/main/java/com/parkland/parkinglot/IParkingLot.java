@@ -1,5 +1,6 @@
 package com.parkland.parkinglot;
 
+import com.parkland.enums.CarColor;
 import com.parkland.vehicles.Vehicle;
 
 import java.util.List;
@@ -21,10 +22,10 @@ public interface IParkingLot {
 
     void getLotStatus();
 
-    List<Vehicle> getRegNumbersFromColor(String color);
+    List<Vehicle> getRegNumbersFromColor(CarColor color);
 
-    List<Integer> getSlotNumbersFromColor(String color);
+    List<Integer> getSlotNumbersFromColor(CarColor color);
 
-    List<Integer> getSlotNumberFromRegNumber(String regNum);
+    Integer getSlotNumberFromRegNumber(String regNum);
 }
 

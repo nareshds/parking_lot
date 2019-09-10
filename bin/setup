@@ -1,0 +1,11 @@
+# Add script to:
+# * Install dependencies
+mvn install
+# * Build/Compile
+mvn compile
+# * Run Test Suit to validate
+#
+mvn test
+# After this is run, bin/parking_lot
+
+# should Just Work.
