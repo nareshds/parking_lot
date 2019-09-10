@@ -10,7 +10,13 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 # Use DIR variable above to pinpoint your jar/executable/main class
 # e.g.
 # - if java
-   java -cp $DIR/../target/parking_lot-1.0-SNAPSHOT.jar com.parkland.Main
+if [ -z "$1" ]
+then
+      java -cp $DIR/../target/parking_lot-1.0-SNAPSHOT.jar com.parkland.Main
+else
+      java -cp $DIR/../target/parking_lot-1.0-SNAPSHOT.jar com.parkland.Main < $1
+fi
+
 # - if python
 #   python3 $DIR/../main.py $1
 # - if ruby

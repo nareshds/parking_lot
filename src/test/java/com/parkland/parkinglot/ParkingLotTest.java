@@ -234,6 +234,7 @@ public class ParkingLotTest {
         lot.setParkingSlots(null);
     }
 
+    @Test
     public void testSlotNumberFromRegNumber(){
         ParkingLot lot = new ParkingLot();
         int n = 6;
@@ -258,6 +259,7 @@ public class ParkingLotTest {
 
         slot = lot.getSlotNumberFromRegNumber("AP-09-1234");
         Assert.assertNull(slot);
+        //Assert.assertEquals(os.toString().split("\n")[6], Constants.INFO_NOT_FOUND);
 
         lot.setParkingSlots(null);
     }

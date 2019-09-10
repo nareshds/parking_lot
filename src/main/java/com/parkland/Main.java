@@ -78,10 +78,8 @@ public class Main {
                 case slot_number_for_registration_number:
                     if(lot != null) {
                         Integer slot = lot.getSlotNumberFromRegNumber(input[1]);
-                        if (slot == null){
-                            System.out.println(Constants.INFO_NOT_FOUND);
-                        }
-                        System.out.println(slot);
+                        if (slot == null) System.out.println(Constants.INFO_NOT_FOUND);
+                        else System.out.println(slot);
                     }
                     break;
                 case exit:

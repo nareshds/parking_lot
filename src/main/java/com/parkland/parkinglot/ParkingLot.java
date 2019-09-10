@@ -26,7 +26,12 @@ public class ParkingLot implements IParkingLot {
      * @return
      */
     public final List<ParkingSlot> createParkingSlot(Integer n){
-        setLotSize(n);
+        if(n > 0){
+            setLotSize(n);
+        } else {
+            throw new IllegalArgumentException(Constants.RANGE_EXCEPTION);
+        }
+
         if(getParkingSlots() == null){
             buildParkingLot();
             setFilledSlots(new HashMap<Integer, Vehicle>());

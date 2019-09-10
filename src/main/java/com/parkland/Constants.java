@@ -17,4 +17,6 @@ public class Constants {
     public static final String ERROR_NO_PARKING_OBJECT = "No parking lot object found";
     public static final String ERROR_INVALID_QUERY = "Not a valid query or input";
     public static final String ERROR_ILLEGAL_ARG = "Creating another instance of parking lot is not allowed";
+
+    public static final String RANGE_EXCEPTION = "Input of range, required n > 0";
 }
