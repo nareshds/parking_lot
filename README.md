@@ -35,7 +35,7 @@ a given colour
           * Reg # :: String
           * Color :: Enum
     * Enums: 
-        * CarColor :: {Black, Blue, Brown, Green, Red, White< Yellow}
+        * CarColor :: {Black, Blue, Brown, Green, Red, White, Yellow}
         * Queries  
             * create_parking_lot
             * park
@@ -53,7 +53,7 @@ a given colour
 
 Commands required to install required dependencies, compiling the 
 source code, executing unit tests and executing the Main(Driver) class 
-can be found in  ``.\bin\setup`` script
+can be found in  ``./bin/setup`` script
 
 ```shell script
 # run code interactively
