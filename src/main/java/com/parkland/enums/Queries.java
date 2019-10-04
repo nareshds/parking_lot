@@ -1,5 +1,8 @@
 package com.parkland.enums;
 
+/**
+ * supported queries
+ */
 public enum Queries {
     create_parking_lot
     , park

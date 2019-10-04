@@ -38,7 +38,8 @@ public class ParkingLotTest {
         int n = 10;
         List<ParkingSlot> slots = lot.createParkingSlot(n);
 
-        Assert.assertEquals(os.toString(), Constants.INFO_LOT_CREATED+" " +n+" "+Constants.SLOTS+"\n");
+        Assert.assertEquals(os.toString().replaceAll("\n", "").replaceAll("\r", ""),
+                Constants.INFO_LOT_CREATED+" " +n+" "+Constants.SLOTS);
         Assert.assertEquals(slots.size(),  n);
         for(int i = 0; i < 6; i++){
             Assert.assertEquals(slots.get(i).getSlotId(), i+1);
@@ -62,23 +63,30 @@ public class ParkingLotTest {
         Vehicle v6 = new Car("KA-01-HH-3141", CarColor.Black);
 
         lot.parkVehicle(v1);
-        Assert.assertEquals(os.toString().split("\n")[1], Constants.INFO_ALLOTTED_SLOT+"1");
+        Assert.assertEquals(os.toString().split("\n")[1].replaceAll("\n", "").replaceAll("\r", ""),
+                Constants.INFO_ALLOTTED_SLOT+"1");
         lot.parkVehicle(v2);
-        Assert.assertEquals(os.toString().split("\n")[2], Constants.INFO_ALLOTTED_SLOT+"2");
+        Assert.assertEquals(os.toString().split("\n")[2].replaceAll("\n", "").replaceAll("\r", ""),
+                Constants.INFO_ALLOTTED_SLOT+"2");
         lot.parkVehicle(v3);
-        Assert.assertEquals(os.toString().split("\n")[3], Constants.INFO_ALLOTTED_SLOT+"3");
+        Assert.assertEquals(os.toString().split("\n")[3].replaceAll("\n", "").replaceAll("\r", ""),
+                Constants.INFO_ALLOTTED_SLOT+"3");
 
         lot.parkVehicle(v4);
-        Assert.assertEquals(os.toString().split("\n")[4], Constants.INFO_ALLOTTED_SLOT+"4");
+        Assert.assertEquals(os.toString().split("\n")[4].replaceAll("\n", "").replaceAll("\r", ""),
+                Constants.INFO_ALLOTTED_SLOT+"4");
 
         lot.parkVehicle(v5);
-        Assert.assertEquals(os.toString().split("\n")[5], Constants.INFO_ALLOTTED_SLOT+"5");
+        Assert.assertEquals(os.toString().split("\n")[5].replaceAll("\n", "").replaceAll("\r", ""),
+                Constants.INFO_ALLOTTED_SLOT+"5");
 
         lot.parkVehicle(v6);
-        Assert.assertEquals(os.toString().split("\n")[6], Constants.INFO_ALLOTTED_SLOT+"6");
+        Assert.assertEquals(os.toString().split("\n")[6].replaceAll("\n", "").replaceAll("\r", ""),
+                Constants.INFO_ALLOTTED_SLOT+"6");
 
         lot.parkVehicle(new Car("AP-09-1234", CarColor.Brown));
-        Assert.assertEquals(os.toString().split("\n")[7], Constants.INFO_PARKING_FULL);
+        Assert.assertEquals(os.toString().split("\n")[7].replaceAll("\n", "").replaceAll("\r", ""),
+                Constants.INFO_PARKING_FULL);
 
         lot.setParkingSlots(null);
     }
@@ -104,10 +112,12 @@ public class ParkingLotTest {
         lot.parkVehicle(v6);
 
         lot.unParkVehicle(4);
-        Assert.assertEquals(os.toString().split("\n")[7], Constants.SLOT_NUMBER+"4"+Constants.IS_FREE);
+        Assert.assertEquals(os.toString().split("\n")[7].replaceAll("\n", "").replaceAll("\r", ""),
+                Constants.SLOT_NUMBER+"4"+Constants.IS_FREE);
 
         lot.unParkVehicle(2);
-        Assert.assertEquals(os.toString().split("\n")[7], Constants.SLOT_NUMBER+"4"+Constants.IS_FREE);
+        Assert.assertEquals(os.toString().split("\n")[7].replaceAll("\n", "").replaceAll("\r", ""),
+                Constants.SLOT_NUMBER+"4"+Constants.IS_FREE);
 
         ParkingSlot nearestSlot = new ParkingSlot().nearestParkingSlot(lot.getParkingSlots());
         Assert.assertEquals(nearestSlot.getSlotId(), 2);
